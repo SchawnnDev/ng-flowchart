@@ -64,8 +64,8 @@ export class NgFlowchartCanvasDirective
   _callbacks: NgFlowchart.Callbacks;
 
   @HostListener('wheel', ['$event'])
-  protected onZoom(event) {
-    if (this._options.zoom.mode === 'WHEEL') {
+  protected onZoom(event: WheelEvent) {
+    if (this._options.zoom.mode === 'WHEEL' && (event.ctrlKey || event.metaKey)) {
       this.adjustWheelScale(event);
     }
   }
