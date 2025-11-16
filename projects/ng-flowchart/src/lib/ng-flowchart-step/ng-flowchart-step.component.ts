@@ -33,10 +33,11 @@ export type AddChildOptions = {
 };
 
 @Component({
-  selector: 'ng-flowchart-step',
-  templateUrl: './ng-flowchart-step.component.html',
-  styleUrls: ['./ng-flowchart-step.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'ng-flowchart-step',
+    templateUrl: './ng-flowchart-step.component.html',
+    styleUrls: ['./ng-flowchart-step.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class NgFlowchartStepComponent<T = any>
   implements OnInit, AfterViewInit

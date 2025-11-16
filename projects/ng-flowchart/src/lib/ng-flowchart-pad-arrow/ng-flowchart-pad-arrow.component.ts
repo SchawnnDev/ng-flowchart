@@ -10,9 +10,10 @@ import {
 import { OptionsService } from '../services/options.service';
 
 @Component({
-  selector: 'ng-flowchart-pad-arrow',
-  templateUrl: './ng-flowchart-pad-arrow.component.html',
-  styleUrls: ['./ng-flowchart-pad-arrow.component.scss'],
+    selector: 'ng-flowchart-pad-arrow',
+    templateUrl: './ng-flowchart-pad-arrow.component.html',
+    styleUrls: ['./ng-flowchart-pad-arrow.component.scss'],
+    standalone: false
 })
 export class NgFlowchartPadArrowComponent implements OnInit, AfterViewInit {
   @ViewChild('arrow')

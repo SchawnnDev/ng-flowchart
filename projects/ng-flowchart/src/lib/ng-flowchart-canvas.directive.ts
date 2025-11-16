@@ -18,13 +18,14 @@ import { OptionsService } from './services/options.service';
 import { StepManagerService } from './services/step-manager.service';
 
 @Directive({
-  selector: '[ngFlowchartCanvas]',
-  providers: [
-    NgFlowchartCanvasService,
-    StepManagerService,
-    OptionsService,
-    CanvasRendererService,
-  ],
+    selector: '[ngFlowchartCanvas]',
+    providers: [
+        NgFlowchartCanvasService,
+        StepManagerService,
+        OptionsService,
+        CanvasRendererService,
+    ],
+    standalone: false
 })
 export class NgFlowchartCanvasDirective
   implements OnInit, OnDestroy, AfterViewInit
