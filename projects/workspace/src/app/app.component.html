@@ -4,26 +4,28 @@
     ngFlowchartCanvas
     [ngFlowchartOptions]="options"
     [ngFlowchartCallbacks]="callbacks"
-    [disabled]="disabled"></div>
+  [disabled]="disabled"></div>
   <div id="palette">
     <div>Angular v{{ version.full }}</div>
     <section>
-      <div
-        class="plugin-op"
-        *ngFor="let item of items"
+      @for (item of items; track item) {
+        <div
+          class="plugin-op"
         [ngFlowchartStep]="{
           template: normalStep,
           type: item.type,
           data: item.data
         }">
-        <span>{{ item.name }}</span>
-      </div>
-      <div
-        class="plugin-op"
-        *ngFor="let op of customOps"
-        [ngFlowchartStep]="op.step">
-        <span>{{ op.paletteName }}</span>
-      </div>
+          <span>{{ item.name }}</span>
+        </div>
+      }
+      @for (op of customOps; track op) {
+        <div
+          class="plugin-op"
+          [ngFlowchartStep]="op.step">
+          <span>{{ op.paletteName }}</span>
+        </div>
+      }
     </section>
 
     <section>
@@ -49,38 +51,38 @@
           type="checkbox"
           name="sequential"
           (change)="onSequentialChange($event)" />
-      </div>
-      <div class="sub-section">
-        <label for="orientation">Horizontal Orientation</label>
-        <input
-          type="checkbox"
-          name="orientation"
-          (change)="onOrientationChange($event)" />
-      </div>
-      <div class="sub-section">
-        <label for="disabled">Disabled</label>
-        <input
-          type="checkbox"
-          name="disabled"
-          (change)="disabled = $any($event).target.checked" />
-      </div>
-    </section>
-    <section>
-      <button (click)="clearData()">Clear Flow</button>
-    </section>
-    <section>
-      <button (click)="onGrow()">+</button>
-      <button (click)="onShrink()">-</button>
-      <button (click)="onReset()">Reset</button>
-    </section>
-    <ng-template #normalStep let-data>
-      <div
-        class="card"
-        [attr.name]="data.data.name"
-        #card
-        (click)="onDelete(data.id)">
-        <span>{{ data.data.name }}</span>
-      </div>
-    </ng-template>
-  </div>
-</main>
+        </div>
+        <div class="sub-section">
+          <label for="orientation">Horizontal Orientation</label>
+          <input
+            type="checkbox"
+            name="orientation"
+            (change)="onOrientationChange($event)" />
+          </div>
+          <div class="sub-section">
+            <label for="disabled">Disabled</label>
+            <input
+              type="checkbox"
+              name="disabled"
+              (change)="disabled = $any($event).target.checked" />
+            </div>
+          </section>
+          <section>
+            <button (click)="clearData()">Clear Flow</button>
+          </section>
+          <section>
+            <button (click)="onGrow()">+</button>
+            <button (click)="onShrink()">-</button>
+            <button (click)="onReset()">Reset</button>
+          </section>
+          <ng-template #normalStep let-data>
+            <div
+              class="card"
+              [attr.name]="data.data.name"
+              #card
+              (click)="onDelete(data.id)">
+              <span>{{ data.data.name }}</span>
+            </div>
+          </ng-template>
+        </div>
+      </main>

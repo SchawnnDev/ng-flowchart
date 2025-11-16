@@ -7,13 +7,19 @@
     "esModuleInterop": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2022", "DOM"],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "paths": {
-      "ng-flowchart": ["dist/ng-flowchart/ng-flowchart", "dist/ng-flowchart"]
+      "ng-flowchart": [
+        "dist/ng-flowchart/ng-flowchart",
+        "dist/ng-flowchart"
+      ]
     },
     "useDefineForClassFields": false
   },
