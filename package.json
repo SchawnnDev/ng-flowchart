@@ -34,9 +34,9 @@
     "@angular-eslint/template-parser": "18.0.1",
     "@angular/cli": "^18.2.21",
     "@angular/compiler-cli": "^18.2.14",
-    "@types/jasmine": "~5.1.12",
+    "@types/jasmine": "~5.1.13",
     "@types/jasminewd2": "~2.0.13",
-    "@types/node": "^20.19.24",
+    "@types/node": "^20.19.25",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.1",
@@ -55,5 +55,6 @@
     "protractor": "~7.0.0",
     "ts-node": "~10.9.2",
     "typescript": "~5.4.5"
-  }
+  },
+  "packageManager": "pnpm@10.21.0+sha512.da3337267e400fdd3d479a6c68079ac6db01d8ca4f67572083e722775a796788a7a9956613749e000fac20d424b594f7a791a5f4e2e13581c5ef947f26968a40"
 }
