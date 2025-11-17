@@ -647,13 +647,10 @@ export class CanvasRendererService {
   }
 
   public setScale(flow: CanvasFlow, scaleValue: number) {
-    const minDimAdjust = `${(1 / scaleValue) * 100}%`;
-
     const canvasContent = this.getCanvasContentElement();
 
+
     canvasContent.style.transform = `scale(${scaleValue})`;
-    canvasContent.style.minHeight = minDimAdjust;
-    canvasContent.style.minWidth = minDimAdjust;
     canvasContent.style.transformOrigin = 'top left';
     canvasContent.classList.add('scaling');
 

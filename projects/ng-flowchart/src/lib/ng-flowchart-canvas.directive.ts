@@ -66,8 +66,13 @@ export class NgFlowchartCanvasDirective
 
   @HostListener('wheel', ['$event'])
   protected onZoom(event: WheelEvent) {
-    if (this._options.zoom.mode === 'WHEEL' && (event.ctrlKey || event.metaKey)) {
-      this.adjustWheelScale(event);
+    if (this._options.zoom.mode === 'WHEEL') {
+      // For trackpad: only zoom when Ctrl/Cmd is pressed (pinch gesture)
+      // For mouse: zoom when Ctrl/Cmd is pressed
+      if (event.ctrlKey || event.metaKey) {
+        this.adjustWheelScale(event);
+      }
+      // If no Ctrl/Cmd key, allow normal scrolling (don't prevent default)
     }
   }
 
