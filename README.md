@@ -26,7 +26,7 @@ Inspired by [Alyssa X Flowy](https://github.com/alyssaxuu/flowy)
   - Angular 17 & 18 support
     - Requires use of ```{ provide: REMOVE_STYLES_ON_COMPONENT_DESTROY, useValue: false }```
       OR
-      ```@import '@joelwenzel/ng-flowchart/assets/styles.scss';```
+      ```@import '@schawnndev/ng-flowchart/assets/styles.scss';```
       to apply base step styles as Angular breaks base Component style inheritance with the new default ```REMOVE_STYLES_ON_COMPONENT_DESTROY: true```
       
 - 1.0.2-beta
@@ -56,14 +56,14 @@ Inspired by [Alyssa X Flowy](https://github.com/alyssaxuu/flowy)
 1. Install it.
 
 ```
-npm i --save @joelwenzel/ng-flowchart
+npm i --save @schawnndev/ng-flowchart
 ```
 
 2. Import it.  
    In your app module or module that contains your editor, import `NgFlowchartModule`.
 
 ```
-import { NgFlowchartModule } from '@joelwenzel/ng-flowchart';
+import { NgFlowchartModule } from '@schawnndev/ng-flowchart';
 
 @NgModule({
   imports: [

@@ -1,10 +1,12 @@
 # NgFlowchart
 
-[Demo](https://joelwenzel.com/projects/flowchart?palette=standard) | [Npm](https://www.npmjs.com/package/@joelwenzel/ng-flowchart) | [Getting started](#getting-started) | [Wiki](https://github.com/joel-wenzel/ng-flowchart/wiki/NgFlowchart)
+[Demo](https://joelwenzel.com/projects/flowchart?palette=standard) | [Npm](https://www.npmjs.com/package/@schawnndev/ng-flowchart) | [Getting started](#getting-started) | [Wiki](https://github.com/joel-wenzel/ng-flowchart/wiki/NgFlowchart)
 
 A lightweight Angular Library for building drag and drop flow charts. Chart behavior and steps are customizable. Data can be exported or uploaded in json format.
 
 Inspired by [Alyssa X Flowy](https://github.com/alyssaxuu/flowy)
+
+Forked from [ng-flowchart](https://github.com/joel-wenzel/ng-flowchart)
 
 # Contents
 
@@ -22,11 +24,15 @@ Inspired by [Alyssa X Flowy](https://github.com/alyssaxuu/flowy)
 
 ## Change Log
 
+- 1.0.1-beta
+  - Angular 19 & 20 support
+  - Added zoom options
+
 - 1.0.0-beta.30
   - Angular 17 & 18 support
     - Requires use of ```{ provide: REMOVE_STYLES_ON_COMPONENT_DESTROY, useValue: false }```
       OR
-      ```@import '@joelwenzel/ng-flowchart/assets/styles.scss';```
+      ```@import '@schawnndev/ng-flowchart/assets/styles.scss';```
 
 - 1.0.2-beta
 
@@ -55,14 +61,14 @@ Inspired by [Alyssa X Flowy](https://github.com/alyssaxuu/flowy)
 1. Install it.
 
 ```
-npm i --save @joelwenzel/ng-flowchart
+npm i --save @schawnndev/ng-flowchart
 ```
 
 2. Import it.  
    In your app module or module that contains your editor, import `NgFlowchartModule`.
 
 ```
-import { NgFlowchartModule } from '@joelwenzel/ng-flowchart';
+import { NgFlowchartModule } from '@schawnndev/ng-flowchart';
 
 @NgModule({
   imports: [
@@ -115,7 +121,7 @@ export class AppModule { }
 
 ## If you enjoy it give it a star
 
-Please star the [repo](https://github.com/joel-wenzel/ng-flowchart) if you liked the library. Your support means everything to me and helps me focus on delivering new features
+Please star the [repo](https://github.com/SchawnnDev/ng-flowchart) if you liked the library. Your support means everything to me and helps me focus on delivering new features
 
 # Chart API
 
