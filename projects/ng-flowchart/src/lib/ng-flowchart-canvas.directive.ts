@@ -66,20 +66,18 @@ export class NgFlowchartCanvasDirective
 
   @HostListener('wheel', ['$event'])
   protected onZoom(event: WheelEvent) {
-    if (this._options.zoom.mode === 'WHEEL') {
-      // For trackpad: only zoom when Ctrl/Cmd is pressed (pinch gesture)
-      // For mouse: zoom when Ctrl/Cmd is pressed
-      if (event.ctrlKey || event.metaKey) {
-        this.adjustWheelScale(event);
-      }
-      // If no Ctrl/Cmd key, allow normal scrolling (don't prevent default)
+    if (this._options.zoom.mode !== 'WHEEL') {
+      return;
     }
+    // Wheel / trackpad pinch always zoom, centered on the cursor (React-Flow style).
+    event.preventDefault();
+    this.zoomAtCursor(event);
   }
 
-  pos = { top: 0, left: 0, x: 0, y: 0 };
+  private panStart = { x: 0, y: 0, panX: 0, panY: 0 };
   @HostListener('mousedown', ['$event'])
   protected canvasDragScroll(e: MouseEvent) {
-    var validDragAnchor =
+    const validDragAnchor =
       e.target === this.canvasContent ||
       e.target === this.canvasEle.nativeElement;
     const validLeftClick =
@@ -89,23 +87,18 @@ export class NgFlowchartCanvasDirective
     const validOther =
       (this.options.dragScroll.includes('MIDDLE') && e.button === 1) ||
       (this.options.dragScroll.includes('RIGHT') && e.button === 2);
-    const scrollable =
-      this.canvasEle.nativeElement.scrollWidth >
-        this.canvasEle.nativeElement.clientWidth ||
-      this.canvasEle.nativeElement.scrollHeight >
-        this.canvasEle.nativeElement.clientHeight;
 
-    if (scrollable && (validLeftClick || validOther)) {
+    if (validLeftClick || validOther) {
       e.preventDefault();
       e.stopPropagation();
-      this.pos = {
-        // The current scroll
-        left: this.canvasEle.nativeElement.scrollLeft,
-        top: this.canvasEle.nativeElement.scrollTop,
-        // Get the current mouse position
+      const pan = this.canvas.getPan();
+      this.panStart = {
         x: e.clientX,
         y: e.clientY,
+        panX: pan.x,
+        panY: pan.y,
       };
+      this.canvasEle.nativeElement.classList.add('grabbing');
 
       document.addEventListener('mousemove', this.mouseMoveHandler);
       document.addEventListener('mouseup', this.mouseUpHandler);
@@ -236,39 +229,39 @@ export class NgFlowchartCanvasDirective
     this.canvas.setNestedScale(scaleVal);
   }
 
-  private adjustWheelScale(event) {
-    if (this.canvas.flow.hasRoot()) {
-      event.preventDefault();
-      // scale down / zoom out
-      if (event.deltaY > 0) {
-        this.scaleDown();
-      }
-      // scale up / zoom in
-      else if (event.deltaY < 0) {
-        this.scaleUp();
-      }
+  private zoomAtCursor(event: WheelEvent) {
+    if (!this.canvas.flow.hasRoot()) {
+      return;
     }
+    const rect = this.canvasEle.nativeElement.getBoundingClientRect();
+    const pivotX = event.clientX - rect.left;
+    const pivotY = event.clientY - rect.top;
+
+    const step = this._options.zoom.defaultStep || 0.1;
+    const factor = event.deltaY < 0 ? 1 + step : 1 - step;
+    const newScale = this.canvas.getScale() * factor;
+
+    this.canvas.zoomToPoint(newScale, pivotX, pivotY);
   }
 
-  private mouseMoveHandler(e) {
-    // How far the mouse has been moved
-    const dx = e.clientX - this.pos.x;
-    const dy = e.clientY - this.pos.y;
+  /** Reset the viewport pan/zoom to its default position. */
+  public resetView() {
+    this.canvas.resetView();
+  }
 
-    // Scroll the element
-    this.canvasEle.nativeElement.scrollTop = this.pos.top - dy;
-    this.canvasEle.nativeElement.scrollLeft = this.pos.left - dx;
+  private mouseMoveHandler(e: MouseEvent) {
+    // How far the mouse has been moved since the pan started
+    const dx = e.clientX - this.panStart.x;
+    const dy = e.clientY - this.panStart.y;
+
+    // Translate the viewport (infinite canvas) instead of scrolling
+    this.canvas.setPan(this.panStart.panX + dx, this.panStart.panY + dy);
   }
 
   private mouseUpHandler(e: MouseEvent) {
-    if (
-      (this.options.dragScroll.includes('LEFT') && e.button === 0) ||
-      (this.options.dragScroll.includes('MIDDLE') && e.button === 1) ||
-      (this.options.dragScroll.includes('RIGHT') && e.button === 2)
-    ) {
-      document.removeEventListener('mousemove', this.mouseMoveHandler);
-      document.removeEventListener('mouseup', this.mouseUpHandler);
-    }
+    this.canvasEle.nativeElement.classList.remove('grabbing');
+    document.removeEventListener('mousemove', this.mouseMoveHandler);
+    document.removeEventListener('mouseup', this.mouseUpHandler);
   }
 
   public setOrientation(orientation: NgFlowchart.Orientation) {

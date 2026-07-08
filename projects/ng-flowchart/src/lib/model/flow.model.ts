@@ -96,8 +96,8 @@ export namespace NgFlowchart {
       skipRender: false,
     };
 
-    /** Drag canvas to scroll. Choose which mouse buttons to move with. Default is right click. */
-    dragScroll?: ('LEFT' | 'MIDDLE' | 'RIGHT')[] = ['RIGHT'];
+    /** Drag the empty canvas to pan the viewport. Choose which mouse buttons pan. Default is left click. */
+    dragScroll?: ('LEFT' | 'MIDDLE' | 'RIGHT')[] = ['LEFT'];
 
     /** Canvas flow orientation. Horizontal rotates the ABOVE, BELOW, LEFT, RIGHT drop positions -90 degrees visually. */
     orientation?: Orientation = 'VERTICAL';

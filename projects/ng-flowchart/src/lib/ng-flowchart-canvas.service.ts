@@ -544,4 +544,31 @@ export class NgFlowchartCanvasService {
   public scaleCoordinate(pos: number[]): number[] {
     return this.renderer.scaleCoordinate(pos);
   }
+
+  public getScale(): number {
+    return this.renderer.getScale();
+  }
+
+  public getPan(): { x: number; y: number } {
+    return this.renderer.getPan();
+  }
+
+  public setPan(x: number, y: number): void {
+    this.renderer.setPan(x, y);
+  }
+
+  public panBy(dx: number, dy: number): void {
+    this.renderer.panBy(dx, dy);
+  }
+
+  public zoomToPoint(newScale: number, pivotX: number, pivotY: number): void {
+    if (this.options.options.zoom.mode === 'DISABLED') {
+      return;
+    }
+    this.renderer.zoomToPoint(this.flow, newScale, pivotX, pivotY);
+  }
+
+  public resetView(): void {
+    this.renderer.resetScale(this.flow);
+  }
 }

@@ -126,12 +126,12 @@ export class NgFlowchartConnectorPadComponent implements AfterViewInit {
     endPos[0] -= padOffset;
     endPos[1] -= padOffset;
 
-    const scrollOffset = this.canvas.scaleCoordinate([
-      canvasEle.scrollLeft,
-      canvasEle.scrollTop,
-    ]);
-    this.movingPad.style.left = endPos[0] + scrollOffset[0] + 'px';
-    this.movingPad.style.top = endPos[1] + scrollOffset[1] + 'px';
+    // The content element is translated by the viewport pan, so convert the
+    // cursor position from viewport-space into content-local space.
+    const pan = this.canvas.getPan();
+    const panOffset = this.canvas.scaleCoordinate([pan.x, pan.y]);
+    this.movingPad.style.left = endPos[0] - panOffset[0] + 'px';
+    this.movingPad.style.top = endPos[1] - panOffset[1] + 'px';
 
     this.drawArrow(startPos, endPos, [padOffset, padOffset]);
     if (!skipPan) {

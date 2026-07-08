@@ -27,6 +27,8 @@ export class CanvasRendererService {
   private viewContainer: ViewContainerRef;
 
   private scale: number = 1;
+  private panX: number = 0;
+  private panY: number = 0;
   private scaleDebounceTimer = null;
 
   constructor(
@@ -631,30 +633,30 @@ export class CanvasRendererService {
   }
 
   public resetScale(flow: CanvasFlow) {
+    this.panX = 0;
+    this.panY = 0;
     this.setScale(flow, 1);
   }
 
   public scaleUp(flow: CanvasFlow, step?: number) {
     const newScale =
       this.scale + this.scale * (step || this.options.options.zoom.defaultStep);
-    this.setScale(flow, newScale);
+    this.zoomToViewportCenter(flow, newScale);
   }
 
   public scaleDown(flow: CanvasFlow, step?: number) {
     const newScale =
       this.scale - this.scale * (step || this.options.options.zoom.defaultStep);
-    this.setScale(flow, newScale);
+    this.zoomToViewportCenter(flow, newScale);
   }
 
   public setScale(flow: CanvasFlow, scaleValue: number) {
     const canvasContent = this.getCanvasContentElement();
 
-
-    canvasContent.style.transform = `scale(${scaleValue})`;
-    canvasContent.style.transformOrigin = 'top left';
+    this.scale = scaleValue;
+    this.applyViewportTransform();
     canvasContent.classList.add('scaling');
 
-    this.scale = scaleValue;
     if (!this.options.options.zoom.skipRender) {
       this.render(flow, true);
     }
@@ -671,6 +673,59 @@ export class CanvasRendererService {
 
   public setNestedScale(scaleValue: number) {
     this.scale = scaleValue;
+  }
+
+  public getScale(): number {
+    return this.scale;
+  }
+
+  public getPan(): { x: number; y: number } {
+    return { x: this.panX, y: this.panY };
+  }
+
+  /** Move the viewport by an absolute pan offset (in screen pixels). */
+  public setPan(x: number, y: number): void {
+    this.panX = x;
+    this.panY = y;
+    this.applyViewportTransform();
+  }
+
+  /** Move the viewport by a relative pan delta (in screen pixels). */
+  public panBy(dx: number, dy: number): void {
+    this.setPan(this.panX + dx, this.panY + dy);
+  }
+
+  /**
+   * Zoom to a new scale while keeping the content point currently under the
+   * given pivot fixed on screen. Pivot is expressed in viewport-local pixels
+   * (relative to the top-left of the canvas element).
+   */
+  public zoomToPoint(
+    flow: CanvasFlow,
+    newScale: number,
+    pivotX: number,
+    pivotY: number
+  ): void {
+    if (newScale <= 0) {
+      return;
+    }
+    const oldScale = this.scale;
+    this.panX = pivotX - ((pivotX - this.panX) / oldScale) * newScale;
+    this.panY = pivotY - ((pivotY - this.panY) / oldScale) * newScale;
+    this.setScale(flow, newScale);
+  }
+
+  private zoomToViewportCenter(flow: CanvasFlow, newScale: number): void {
+    const viewport =
+      this.viewContainer.element.nativeElement as HTMLElement;
+    const rect = viewport.getBoundingClientRect();
+    this.zoomToPoint(flow, newScale, rect.width / 2, rect.height / 2);
+  }
+
+  private applyViewportTransform(): void {
+    const content = this.getCanvasContentElement();
+    content.style.transformOrigin = '0 0';
+    content.style.transform = `translate(${this.panX}px, ${this.panY}px) scale(${this.scale})`;
   }
 
   private drawConnectors(flow: CanvasFlow, canvasRect: DOMRect): void {

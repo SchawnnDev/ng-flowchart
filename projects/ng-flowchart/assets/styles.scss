@@ -1,5 +1,13 @@
 .ngflowchart-canvas {
   display: flex;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+
+  &.grabbing {
+    cursor: grabbing;
+  }
 
   .ngflowchart-canvas-content.scaling .ngflowchart-step-wrapper,
   .ngflowchart-canvas-content.scaling svg,
