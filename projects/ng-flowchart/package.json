@@ -1,6 +1,6 @@
 {
   "name": "@schawnndev/ng-flowchart",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A lightweight Angular Library for building drag and drop flow charts. Forked version.",
   "license": "Apache-2.0",
   "keywords": [
